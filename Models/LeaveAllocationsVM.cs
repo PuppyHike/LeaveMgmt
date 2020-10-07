@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LeaveMgmt.Models
 {
-    public class LeaveAllocationsVM
+    public class LeaveAllocationVM
     {
         public int Id { get; set; }
         [Required]
@@ -18,7 +18,7 @@ namespace LeaveMgmt.Models
         public PersonVM Person { get; set; }
 
         public string PersonId { get; set; }
-        public DetailLeaveTypeVM LeaveType { get; set; }
+        public LeaveTypeVM LeaveType { get; set; }
         public int LeaveTypeId { get; set; }
 
         public IEnumerable<SelectListItem> Persons { get; set; }

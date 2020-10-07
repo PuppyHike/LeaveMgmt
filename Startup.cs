@@ -8,12 +8,14 @@ using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
+using AutoMapper;
 using LeaveMgmt.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using LeaveMgmt.Repository;
 using LeaveMgmt.Contracts;
+using LeaveMgmt.Mappings;
 
 namespace LeaveMgmt
 {
@@ -37,8 +39,11 @@ namespace LeaveMgmt
 
             //Add References to Repository and Contracts to Startup file
             services.AddScoped<iLeaveTypeRepository, LeaveTypeRepository>();
-            services.AddScoped<iLeaveAllocationRepository, iLeaveAllocationRepository>();
-            services.AddScoped<iLeaveHistoryRepository, iLeaveHistoryRepository>();
+            services.AddScoped<iLeaveAllocationRepository, LeaveAllocationRepository>();
+            services.AddScoped<iLeaveHistoryRepository, LeaveHistoryRepository>();
+
+            //Add Reference to AutoMapper
+            services.AddAutoMapper(typeof(Maps));
 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();

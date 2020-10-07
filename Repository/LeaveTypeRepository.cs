@@ -1,5 +1,6 @@
 ﻿using LeaveMgmt.Contracts;
 using LeaveMgmt.Data;
+using Microsoft.EntityFrameworkCore.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,11 @@ namespace LeaveMgmt.Repository
             return Save();
         }
 
+        public bool isExists(int id)
+        {
+            var exists = _db.LeaveTypes.Any(q => q.Id == id);
+            return exists;
+        }
         public bool Delete(LeaveType entity)
         {
             _db.Remove(entity);

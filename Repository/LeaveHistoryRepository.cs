@@ -26,7 +26,11 @@ namespace LeaveMgmt.Repository
             var delete = _db.LeaveHistories.Remove(entity);
             return Save();
         }
-
+        public bool isExists(int id)
+        {
+            var exists = _db.LeaveHistories.Any(q => q.Id == id);
+            return exists;
+        }
         public ICollection<LeaveHistory> FindAll()
         {
             var list = _db.LeaveHistories.ToList();
