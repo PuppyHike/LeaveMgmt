@@ -45,24 +45,31 @@ namespace LeaveMgmt
             //Add Reference to AutoMapper
             services.AddAutoMapper(typeof(Maps));
 
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            //////Seed the database with Roles
+            services.AddDefaultIdentity<IdentityUser>()
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
             services.AddControllersWithViews();
             services.AddRazorPages();
 
-            IMvcBuilder builder = services.AddRazorPages();
+          //  IMvcBuilder builder = services.AddRazorPages();
 
 #if DEBUG
-            if (Env.IsDevelopment())
-            {
-                builder.AddRazorRuntimeCompilation();
-            }
+            //if (Env.IsDevelopment())
+            //{
+            //    builder.AddRazorRuntimeCompilation();
+            //}
 #endif
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        //Add UserManager and RoleManager parameters
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
+                                UserManager<IdentityUser> userManager,
+                                RoleManager<IdentityRole> roleManager)
         {
+         
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -81,6 +88,10 @@ namespace LeaveMgmt
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            //Call the Static Class SeedData to seend the Administrator and Member Roles
+            SeedData.Seed(userManager, roleManager);
+
 
             app.UseEndpoints(endpoints =>
             {

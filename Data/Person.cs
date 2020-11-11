@@ -8,7 +8,7 @@ namespace LeaveMgmt.Data
 {
     public class Person : IdentityUser
     {
-        public string Firstname { get; set; }
+        public string FirstName { get; set; }
         public string LastName { get; set; }
 
         public string TaxId { get; set; }
