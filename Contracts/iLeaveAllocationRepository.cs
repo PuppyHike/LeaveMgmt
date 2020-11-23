@@ -11,5 +11,7 @@ namespace LeaveMgmt.Contracts
         ICollection<LeaveAllocation> GetAllPersonsByLeaveAllocations(int leaveAllocationId);
 
         bool CheckAllocation(int leavetypeid, string personId);
+
+        ICollection<LeaveAllocation> GetLeaveAllocationsByPerson(string id);
     }
 }

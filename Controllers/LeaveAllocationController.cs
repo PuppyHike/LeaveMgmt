@@ -20,9 +20,9 @@ namespace LeaveMgmt.Controllers
         private readonly iLeaveAllocationRepository _repo;
         private readonly iLeaveTypeRepository _repoLeaveType;
         private readonly IMapper _mapper;
-        private readonly UserManager<IdentityUser> _people;
+        private readonly UserManager<Person> _people;
 
-        public LeaveAllocationController(iLeaveAllocationRepository repo, iLeaveTypeRepository repoLeaveType, IMapper mapper, UserManager<IdentityUser> userManager)
+        public LeaveAllocationController(iLeaveAllocationRepository repo, iLeaveTypeRepository repoLeaveType, IMapper mapper, UserManager<Person> userManager)
         {
             _repo = repo;
             _repoLeaveType = repoLeaveType;
@@ -75,10 +75,24 @@ namespace LeaveMgmt.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: LeaveAllocationController/Details/5
-        public ActionResult Details(int id)
+        public ActionResult ListPeople()
         {
-            return View();
+            var people = _people.GetUsersInRoleAsync("Member").Result;
+            var model = _mapper.Map<List<PersonVM>>(people);
+            return View(model);
+        }
+        // GET: LeaveAllocationController/Details/5
+        public ActionResult Details(string id)
+        {
+            var person = _mapper.Map<PersonVM>( _people.FindByIdAsync(id).Result);
+            var period = DateTime.Now.Year;
+            var allocations = _mapper.Map<List<LeaveAllocationVM>>(_repo.GetLeaveAllocationsByPerson(id));
+            var model = new ViewAllocationVM
+            {
+                Person = person,
+                LeaveAllocations = allocations
+            };
+            return View(model);
         }
 
         // GET: LeaveAllocationController/Create
@@ -105,17 +119,35 @@ namespace LeaveMgmt.Controllers
         // GET: LeaveAllocationController/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            var leaveAllocation = _repo.FindById(id);
+            var model = _mapper.Map<EditLeaveAllocationVM>(leaveAllocation);
+            return View(model);
         }
 
         // POST: LeaveAllocationController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(EditLeaveAllocationVM model)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                if(!ModelState.IsValid)
+                {
+                    return View(model);
+                }
+                var record = _repo.FindById(model.Id);
+                record.NumberOfDays = model.NumberOfDays;
+               // var allocation = _mapper.Map<LeaveAllocation>(record);
+                var isSuccess = _repo.Update(record);
+
+                if(!isSuccess)
+                {
+                    ModelState.AddModelError("", "Error while saving");
+                    return View(model);
+                }
+
+
+                return RedirectToAction(nameof(Details), new { id = model.PersonId});
             }
             catch
             {

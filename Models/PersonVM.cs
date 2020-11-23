@@ -8,13 +8,14 @@ namespace LeaveMgmt.Models
 {
     public class PersonVM
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         [Required]
         public string UserName { get; set; }
         [Required]
         public string Email { get; set; }
         
         public string PhoneNumber { get; set; }
+        
         public string Firstname { get; set; }
         public string LastName { get; set; }
 

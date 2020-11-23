@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using LeaveMgmt.Data;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,17 +10,19 @@ namespace LeaveMgmt
     // Static class at root to add seed data for Roles and Users into the database
     public static class SeedData
     {
-        public static void Seed(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
+        public static void Seed(UserManager<Person> userManager, RoleManager<IdentityRole> roleManager)
         {
             SeedRoles(roleManager);
             SeedUsers(userManager);
         }
-        private static void SeedUsers(UserManager<IdentityUser> userManager)
+        private static void SeedUsers(UserManager<Person> userManager)
         {
-            var users = userManager.GetUsersInRoleAsync("Person").Result;
-            if(userManager.FindByNameAsync("admin").Result == null)
+            var users = userManager.GetUsersInRoleAsync("Member").Result;
+            var userAdmins = userManager.FindByNameAsync("admin").Result;
+            
+            if (users.Count == 0 && userAdmins == null)
             {
-                var user = new IdentityUser
+                var user = new Person
                 {
                     UserName = "admin",
                     Email = "liz@icontoo.com"

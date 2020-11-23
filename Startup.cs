@@ -46,7 +46,7 @@ namespace LeaveMgmt
             services.AddAutoMapper(typeof(Maps));
 
             //////Seed the database with Roles
-            services.AddDefaultIdentity<IdentityUser>()
+            services.AddDefaultIdentity<Person>()
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
@@ -66,7 +66,7 @@ namespace LeaveMgmt
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         //Add UserManager and RoleManager parameters
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
-                                UserManager<IdentityUser> userManager,
+                                UserManager<Person> userManager,
                                 RoleManager<IdentityRole> roleManager)
         {
          
@@ -89,7 +89,7 @@ namespace LeaveMgmt
             app.UseAuthentication();
             app.UseAuthorization();
 
-            //Call the Static Class SeedData to seend the Administrator and Member Roles
+            //Call the Static Class SeedData to seed the Administrator and Member Roles
             SeedData.Seed(userManager, roleManager);
 
 

@@ -1,5 +1,6 @@
 ﻿using LeaveMgmt.Contracts;
 using LeaveMgmt.Data;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,13 @@ namespace LeaveMgmt.Repository
             return FindAll().Where(q => q.PersonId == personid && q.LeaveTypeId == leavetypeid && q.Period == period).Any();
 
         }
+
+        public ICollection<LeaveAllocation> GetLeaveAllocationsByPerson(string id)
+        {
+            int period = DateTime.Now.Year;
+            return FindAll().Where(q => q.PersonId == id
+            && q.Period == period).ToList();
+        }
         public bool Create(LeaveAllocation entity)
         {
             var create = _db.LeaveAllocations.Add(entity);
@@ -40,13 +48,19 @@ namespace LeaveMgmt.Repository
         }
         public ICollection<LeaveAllocation> FindAll()
         {
-            var lst = _db.LeaveAllocations.ToList();
-            return lst;
+            var LeaveAllocations = _db.LeaveAllocations
+                .Include(c => c.LeaveType)
+                .Include(c => c.Person)
+                .ToList();
+            return LeaveAllocations;
         }
 
         public LeaveAllocation FindById(int id)
         {
-            var leaveAllocation = _db.LeaveAllocations.Find(id);
+            var leaveAllocation = _db.LeaveAllocations
+                .Include(c => c.LeaveType)
+                .Include(c => c.Person)
+                .FirstOrDefault( c => c.Id == id);
             return leaveAllocation;
         }
 
