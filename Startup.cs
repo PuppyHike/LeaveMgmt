@@ -40,7 +40,7 @@ namespace LeaveMgmt
             //Add References to Repository and Contracts to Startup file
             services.AddScoped<iLeaveTypeRepository, LeaveTypeRepository>();
             services.AddScoped<iLeaveAllocationRepository, LeaveAllocationRepository>();
-            services.AddScoped<iLeaveHistoryRepository, LeaveHistoryRepository>();
+            services.AddScoped<iLeaveRequestRepository, LeaveRequestRepository>();
 
             //Add Reference to AutoMapper
             services.AddAutoMapper(typeof(Maps));

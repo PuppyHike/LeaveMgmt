@@ -15,7 +15,7 @@ namespace LeaveMgmt.Mappings
             //ReverseMap allows for the CreateMap to be bidirectional.
             //Otherwise it's source to target
             CreateMap<LeaveType, LeaveTypeVM>().ReverseMap();
-            CreateMap<LeaveHistory, LeaveHistoryVM>().ReverseMap();
+            CreateMap<LeaveRequest, LeaveRequestVM>().ReverseMap();
             CreateMap<LeaveAllocation, LeaveAllocationVM>().ReverseMap();
             CreateMap<LeaveAllocation, EditLeaveAllocationVM>().ReverseMap();
             CreateMap<Person, PersonVM>().ReverseMap();

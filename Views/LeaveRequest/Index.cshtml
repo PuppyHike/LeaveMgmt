@@ -1,0 +1,91 @@
+﻿@model AdminLeaveRequestViewVM
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index for Admin Leave Request View VM</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table id="tblData" class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.LeaveRequest.RequestingPerson)
+            </th>
+           
+            <th>
+                @Html.DisplayNameFor(model => model.LeaveRequest.StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LeaveRequest.EndDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LeaveRequest.LeaveTypes.FirstOrDefault().Text)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LeaveRequest.DateRequested)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LeaveRequest.DateActioned)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LeaveRequest.Approved)
+            </th>
+            <th>
+               Approval Status
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.LeaveRequests) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RequestingPerson.Firstname) @Html.DisplayFor(modelItem => item.RequestingPerson.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LeaveTypes.FirstOrDefault().Text)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateRequested)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateActioned)
+            </td>
+            <td>
+                @if (item.Approved == true)
+                {
+                    <span class="badge badge-success">Approved</span>
+                }
+                else if(item.Approved == false)
+                    {
+                    <span class="badge badge-danger">Rejected</span>
+                }
+                else
+                {
+                    <span class="badge badge-warning">Pending Approval</span> 
+                }
+            </td>
+
+            <td>
+                @Html.ActionLink("Edit", "Edit", new {  id=item.Id}) |
+                @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

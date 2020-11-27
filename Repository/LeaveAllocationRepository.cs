@@ -30,17 +30,7 @@ namespace LeaveMgmt.Repository
             return FindAll().Where(q => q.PersonId == id
             && q.Period == period).ToList();
         }
-        public bool Create(LeaveAllocation entity)
-        {
-            var create = _db.LeaveAllocations.Add(entity);
-            return Save();
-        }
-
-        public bool Delete(LeaveAllocation entity)
-        {
-            var delete = _db.LeaveAllocations.Remove(entity);
-            return Save();
-        }
+       
         public bool isExists(int id)
         {
             var exists = _db.LeaveAllocations.Any(q => q.Id == id);
@@ -70,6 +60,17 @@ namespace LeaveMgmt.Repository
             return personsByLeaveAllocation.ToList();
         }
 
+        public bool Create(LeaveAllocation entity)
+        {
+            var create = _db.LeaveAllocations.Add(entity);
+            return Save();
+        }
+
+        public bool Delete(LeaveAllocation entity)
+        {
+            var delete = _db.LeaveAllocations.Remove(entity);
+            return Save();
+        }
         public bool Save()
         {
             var saved = _db.SaveChanges();
